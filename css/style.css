@@ -15,8 +15,13 @@ body {
   h1 {
     text-align: center;
     margin-top:50px;
-    font-size: 32pt;
+    font-size: 40px;
     color: #1268e9;
+  }
+  h2{
+    text-align: center;
+    margin-top: 20px;
+    color:grey;
   }
   footer{
       text-align: center;

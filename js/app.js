@@ -4,6 +4,7 @@ var container = document.getElementById('all');
 var newSet = [];
 var lastSet = [];
 var allImages = [];
+var counter = 0;
 
 function randomizeImage(){
     for (var i= 0; i<allImagesArray.length; i++){
@@ -19,7 +20,6 @@ function ImageEntry(name, url) {
     this.src = url;
     this.numClicks = 0;
     this.numViews = 0;
-    this.counter = 0;
 
     allImages.push(this);
 }
@@ -73,12 +73,28 @@ function clickHandler(e){
         if (allImages[i].name === imgName){
             allImages[i].updateClicks();
         }
-        // if(counter > 25){
-        //     clicksReached();
-        //     finalScore();
-        // }
     }
-    showRandomImages(3);
+    counter++;
+    console.log(counter);
+if (counter > 24){
+    container.removeEventListener('click', clickHandler);
+    showResults();
+}
+    else{
+        showRandomImages(3);
+    }
+}
+
+function showResults(){
+    var labels = [];
+    var dataSet = [];
+    
+    for (var i = 0; i < allImages.length; i++) {
+        labels.push(allImages[i].name);
+        dataSet.push(allImages[i].numClicks);
+    }
+    makeChart(labels, dataSet);
+
 }
 
 
@@ -113,24 +129,8 @@ function getRandomImage(){
     return found;
 }
 
-//call functions
-loadImageEntry();
-setupImageContainer(3);
-getListener();
-showRandomImages(3);
-
-var labels = [];
-var dataSet = [];
-
-for (var i = 0; i < allImages.length; i++) {
-    labels.push(allImages[i].name);
-    dataSet.push(allImages[i].numClicks);
-}
-
-makeChart(labels, dataSet);
-
 function makeChart(labels, dataSet) {
-
+    
     var ctx = document.getElementById('chart').getContext('2d');
 
     var chart = new Chart(ctx, {
@@ -141,7 +141,7 @@ function makeChart(labels, dataSet) {
         data: {
             labels: labels,
             datasets: [{
-                label: 'Statistics based off clicks',
+                label: 'Chart based off number of clicks',
                 backgroundColor: 'rgb(255, 99, 132)',
                 borderColor: 'rgb(255, 99, 132)',
                 data: dataSet,
@@ -152,3 +152,10 @@ function makeChart(labels, dataSet) {
         options: {}
     });
 }
+
+
+//call functions
+loadImageEntry();
+setupImageContainer(3);
+getListener();
+showRandomImages(3);

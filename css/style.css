@@ -5,7 +5,7 @@ body {
  
   img {
     margin-top: 90px;
-    margin-left: 100px;
+    margin-left: 130px;
     width: 300px;
     height: 300px;
     border-radius: 25px;
@@ -26,5 +26,6 @@ body {
   footer{
       text-align: center;
       background: rgb(212, 203, 203);
-      margin-top: 92mm;
+      margin-top: 10mm;
   }
+  

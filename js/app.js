@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 var container = document.getElementById('all');
 var newSet = [];
@@ -19,6 +19,7 @@ function ImageEntry(name, url) {
     this.src = url;
     this.numClicks = 0;
     this.numViews = 0;
+    this.counter = 0;
 
     allImages.push(this);
 }
@@ -72,9 +73,14 @@ function clickHandler(e){
         if (allImages[i].name === imgName){
             allImages[i].updateClicks();
         }
+        // if(counter > 25){
+        //     clicksReached();
+        //     finalScore();
+        // }
     }
     showRandomImages(3);
 }
+
 
 function showRandomImages(numImages) {
     newSet = {};
@@ -113,68 +119,36 @@ setupImageContainer(3);
 getListener();
 showRandomImages(3);
 
+var labels = [];
+var dataSet = [];
 
+for (var i = 0; i < allImages.length; i++) {
+    labels.push(allImages[i].name);
+    dataSet.push(allImages[i].numClicks);
+}
 
+makeChart(labels, dataSet);
 
+function makeChart(labels, dataSet) {
 
+    var ctx = document.getElementById('chart').getContext('2d');
 
-// function randomProduct() {
-//     var getRandomnum = Math.floor(Math.random() * productArray.length);
-// //if not in previous set or current set, we found it, put that in current set.
-// }
+    var chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'bar',
 
+        // The data for our dataset
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Statistics based off clicks',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: dataSet,
+            }]
+        },
 
-// var firstRandom, secondRandom, thirdRandom;
-
-//     firstRandom = randomProduct();
-//     firstImage.setAttribute('src', firstRandom[0].path);
-//     var firstImage = document.getElementById('image1');
-
-
-//     secondRandom = randomProduct();
-//     while (firstRandom[1] === secondRandom[1]) {
-//         secondRandom = randomProduct();
-//     }
-//     secondImage.setAttribute('src', secondRandom[0].path);
-//     var secondImage = document.getElementById('image2');
-
-
-//     thirdRandom = randomProduct();
-//     while (secondRandom[1] === thirdRandom[1] || thirdRandom[1] === firstRandom[1]) {
-//         thirdRandom = randomProduct();
-//     }
-
-//     thirdImage.setAttribute('src', thirdRandom[0].path);
-//     var thirdImage = document.getElementById('image3');
-
-
-//     justShown = [];
-//     justShown.push(firstRandom[1]);
-//     justShown.push(secondRandom[1]);
-//     justShown.push(thirdRandom[1]);
-
-// }
-
-// // firstImage.addEventListener('click', function () {
-// //     firstRandom.clicked += 1;
-// //     counter += 1;
-// //     console.log('count clicks:', counter);
-
-// //     showRandomImages();
-// // });
-// // secondImage.addEventListener('click', function () {
-// //     secondRandom.clicked += 1;
-// //     counter += 1;
-// //     console.log('count clicks:', counter);
-
-// //     showRandomImages();
-// // });
-
-// // thirdImage.addEventListener('click', function () {
-// //     thirdRandom.clicked += 1;
-// //     counter += 1;
-// //     console.log('count clicks:', counter);
-
-// //     showRandomImages();
-// // });
-// // showRandomImages();
+        // Configuration options go here
+        options: {}
+    });
+}

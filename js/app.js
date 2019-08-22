@@ -6,16 +6,15 @@ var lastSet = [];
 var allImages = [];
 var counter = 0;
 
-function randomizeImage(){
-    for (var i= 0; i<allImagesArray.length; i++){
-        var randomizeImage = Math.floor(Math.random()* allImagesArray.length);
+function randomizeImage() {
+    for (var i = 0; i < allImagesArray.length; i++) {
+        var randomizeImage = Math.floor(Math.random() * allImagesArray.length);
         ImageEntryElement.src = allImagesArray[randomizeImage].src;
         ImageEntryCaption.textContent = allImagesArray[randomizeImage].name;
     }
 }
 
 function ImageEntry(name, url) {
-    this.id = Math.random();
     this.name = name;
     this.src = url;
     this.numClicks = 0;
@@ -24,14 +23,14 @@ function ImageEntry(name, url) {
     allImages.push(this);
 }
 
-ImageEntry.prototype.updateViews = function(){ //create function that updates the number of views.
+ImageEntry.prototype.updateViews = function () { //create function that updates the number of views.
     this.numViews++;
 }
-ImageEntry.prototype.updateClicks = function(){ //create function that updates the number of clicks.
+ImageEntry.prototype.updateClicks = function () { //create function that updates the number of clicks.
     this.numClicks++;
 }
 
-function loadImageEntry(){
+function loadImageEntry() {
 
     new ImageEntry('bag', '/assets/images/bag.jpg');
     new ImageEntry('banana', '/assets/images/banana.jpg');
@@ -55,53 +54,52 @@ function loadImageEntry(){
     new ImageEntry('wine-glass', '/assets/images/wine-glass.jpg');
 }
 
-function setupImageContainer(numImages){
-    for (var i=1; i<=numImages;i++){
+
+function setupImageContainer(numImages) {
+    for (var i = 1; i <= numImages; i++) {
         var img = document.createElement('img');
         img.id = `image-${i}`;
         container.appendChild(img);
     }
 }
 
-function getListener(){
+function getListener() {
     container.addEventListener('click', clickHandler);
 }
 
-function clickHandler(e){
+function clickHandler(e) {
     var imgName = e.target.alt;
-    for(var i=0; i<allImages.length;i++){
-        if (allImages[i].name === imgName){
+    for (var i = 0; i < allImages.length; i++) {
+        if (allImages[i].name === imgName) {
             allImages[i].updateClicks();
         }
     }
     counter++;
     console.log(counter);
-if (counter > 24){
-    container.removeEventListener('click', clickHandler);
-    showResults();
-}
-    else{
+    if (counter > 24) {
+        container.removeEventListener('click', clickHandler);
+        showResults();
+    }
+    else {
         showRandomImages(3);
     }
 }
 
-function showResults(){
+function showResults() {
     var labels = [];
     var dataSet = [];
-    
+
     for (var i = 0; i < allImages.length; i++) {
         labels.push(allImages[i].name);
         dataSet.push(allImages[i].numClicks);
     }
     makeChart(labels, dataSet);
-
 }
-
 
 function showRandomImages(numImages) {
     newSet = {};
 
-    for(var i = 1; i<=numImages; i++){
+    for (var i = 1; i <= numImages; i++) {
         var id = `image-${i}`;
         var img = document.getElementById(id);
 
@@ -116,21 +114,21 @@ function showRandomImages(numImages) {
     console.log(allImages);
 }
 
-function getRandomImage(){
+function getRandomImage() {
     var found = false;
-    while(!found){
-        var temp = Math.floor(Math.random()* allImages.length);
-        if (!newSet[temp] && !lastSet[temp]){
+    while (!found) {
+        var temp = Math.floor(Math.random() * allImages.length);
+        if (!newSet[temp] && !lastSet[temp]) {
             found = allImages[temp];
             allImages[temp].updateViews();
-                newSet[temp] = true;
+            newSet[temp] = true;
         }
     }
     return found;
 }
 
 function makeChart(labels, dataSet) {
-    
+
     var ctx = document.getElementById('chart').getContext('2d');
 
     var chart = new Chart(ctx, {
@@ -159,3 +157,15 @@ loadImageEntry();
 setupImageContainer(3);
 getListener();
 showRandomImages(3);
+
+
+// var test = JSON.stringify(test);
+// console.log(test);
+
+// localStorage.setItem('test',showResults);
+// console.log(localStorage);
+
+// localStorage.setItem("name","dominic")
+localStorage.setItem('clicks', dataSet);
+
+var dataSetAsString = JSON.stringify(dataSet)

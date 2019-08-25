@@ -52,18 +52,20 @@ function loadImageEntry() {
     new ImageEntry('usb', '/assets/images/usb.gif');
     new ImageEntry('water-can', '/assets/images/water-can.jpg');
     new ImageEntry('wine-glass', '/assets/images/wine-glass.jpg');
+    
 }
+
 
 
 function setupImageContainer(numImages) {
     for (var i = 1; i <= numImages; i++) {
         var img = document.createElement('img');
-        img.id = `image-${i}`;
+        img.id = `image-${i}`; //creates image 1,2,and 3 instead of doing it myself.
         container.appendChild(img);
     }
 }
 
-function getListener() {
+function getListener() { //add listener
     container.addEventListener('click', clickHandler);
 }
 
@@ -74,22 +76,25 @@ function clickHandler(e) {
             allImages[i].updateClicks();
         }
     }
-    counter++;
+    
+    counter++; //add to counter each time
+    savedToLocalStorage()
     console.log(counter);
-    if (counter > 24) {
-        container.removeEventListener('click', clickHandler);
+    if (counter > 24) { 
+        container.removeEventListener('click', clickHandler); //remove event listener once counter gets above 24.
         showResults();
     }
     else {
-        showRandomImages(3);
+        showRandomImages(3); //otherwise continue to produce 3 random images that are not from the previous set.
     }
+    
 }
 
 function showResults() {
     var labels = [];
     var dataSet = [];
 
-    for (var i = 0; i < allImages.length; i++) {
+    for (var i = 0; i < allImages.length; i++) { //for loop that pushes the name and the number of clicks into empty arrays under the function showResults.
         labels.push(allImages[i].name);
         dataSet.push(allImages[i].numClicks);
     }
@@ -114,7 +119,7 @@ function showRandomImages(numImages) {
     console.log(allImages);
 }
 
-function getRandomImage() {
+function getRandomImage() { 
     var found = false;
     while (!found) {
         var temp = Math.floor(Math.random() * allImages.length);
@@ -127,7 +132,7 @@ function getRandomImage() {
     return found;
 }
 
-function makeChart(labels, dataSet) {
+function makeChart(labels, dataSet) { //function taht creates chart
 
     var ctx = document.getElementById('chart').getContext('2d');
 
@@ -158,14 +163,20 @@ setupImageContainer(3);
 getListener();
 showRandomImages(3);
 
+function savedToLocalStorage(){
 
-// var test = JSON.stringify(test);
-// console.log(test);
+    var namesofItem = [];
+    var numofClicks = [];
+    var numofViews = [];
+    
+    for(var i = 0; i < allImages.length; i++){
+        namesofItem.push(allImages[i].name);
+        numofClicks.push(allImages[i].numClicks);
+        numofViews.push(allImages[i].numViews);
+    }
+    
+    localStorage.setItem('names', JSON.stringify(namesofItem));
+    localStorage.setItem('clicks', JSON.stringify(numofClicks));
+    localStorage.setItem('views', JSON.stringify(numofViews));
 
-// localStorage.setItem('test',showResults);
-// console.log(localStorage);
-
-// localStorage.setItem("name","dominic")
-localStorage.setItem('clicks', dataSet);
-
-var dataSetAsString = JSON.stringify(dataSet)
+}
